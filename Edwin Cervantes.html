@@ -1,0 +1,749 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Edwin Cervantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Concepto: carrusel coverflow en arco (U) con marcos tipo polaroid, info bajo cada proyecto
+   y un detalle que se expande desde el marco a pantalla completa con el color del proyecto. */
+:root {
+  --bg: #17120e;
+  --bg-2: #241b14;
+  --fg: #f2e9dc;
+  --muted: #a8998a;
+  --line: rgba(242, 233, 220, .16);
+  --accent: #3fd0c0;
+  --accent-ink: #06211e;
+  --warm: #e3a45f;
+  --frame: #f4eee4;
+  --shadow: rgba(0, 0, 0, .55);
+  --beam: rgba(255, 244, 225, .09);
+  --on-art: #f6efe6;
+  --on-art-2: rgba(246, 239, 230, .72);
+  --f-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --f-body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #e8e2d8; --bg-2: #dcd4c6; --fg: #241b14; --muted: #66584a; --line: rgba(36, 27, 20, .2);
+    --accent: #0b7f73; --accent-ink: #ffffff; --warm: #a8631f; --frame: #fbf8f2;
+    --shadow: rgba(60, 40, 20, .38); --beam: rgba(255, 255, 255, .55);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #e8e2d8; --bg-2: #dcd4c6; --fg: #241b14; --muted: #66584a; --line: rgba(36, 27, 20, .2);
+  --accent: #0b7f73; --accent-ink: #ffffff; --warm: #a8631f; --frame: #fbf8f2;
+  --shadow: rgba(60, 40, 20, .38); --beam: rgba(255, 255, 255, .55);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.wrap { width: 100%; max-width: 1360px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 48px); }
+
+/* Cabecera */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px 0; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+.mono-mark {
+  width: 40px; height: 40px; display: grid; place-items: center; flex: none;
+  font-family: var(--f-display); font-weight: 700; font-size: .8rem; letter-spacing: -.04em;
+  background: var(--accent); color: var(--accent-ink); border-radius: 50% 50% 50% 4px;
+}
+.brand-t { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.nav { display: flex; align-items: center; gap: clamp(10px, 2.4vw, 28px); }
+.nav a {
+  font-family: var(--f-mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; color: var(--muted); padding: 6px 2px; border-bottom: 1px solid transparent;
+}
+.nav a:hover { color: var(--fg); border-color: var(--accent); }
+.round-btn {
+  height: 38px; min-width: 38px; padding-inline: 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent;
+  display: grid; place-items: center; cursor: pointer;
+  font-family: var(--f-mono); font-size: .74rem; font-weight: 600; letter-spacing: .1em;
+}
+.round-btn:hover { border-color: var(--accent); }
+.round-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.tools { display: flex; gap: 8px; }
+
+/* Titular */
+.hero { text-align: center; padding-block: clamp(14px, 2.4vh, 28px) 0; }
+.eyebrow { margin: 0 0 6px; font-family: var(--f-mono); font-size: .74rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+h1 {
+  margin: 0; font-family: var(--f-display); font-weight: 700; letter-spacing: -.03em; line-height: 1.08;
+  font-size: clamp(1.25rem, 3.1vw, 2.35rem); text-wrap: balance;
+}
+
+/* Escenario del carrusel */
+.stage {
+  position: relative; overflow: hidden; margin-top: 4px; --w: 600px;
+  touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab;
+}
+.stage:active { cursor: grabbing; }
+.stage::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: conic-gradient(from 150deg at 50% -8%, transparent 0deg, var(--beam) 30deg, transparent 60deg, transparent 360deg);
+  -webkit-mask-image: linear-gradient(#000 35%, transparent 95%); mask-image: linear-gradient(#000 35%, transparent 95%);
+}
+.track { position: absolute; inset: 0; perspective: 1500px; perspective-origin: 50% 30%; }
+.slide { position: absolute; left: 50%; top: 0; width: var(--w); cursor: pointer; will-change: transform, opacity; }
+.frame {
+  position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #000;
+  border: clamp(5px, calc(var(--w) * .013), 11px) solid var(--frame); border-radius: 3px;
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+}
+.art { display: block; width: 100%; height: 100%; }
+.art svg { display: block; width: 100%; height: 100%; }
+.shot-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.glass { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255, 255, 255, .24) 0%, rgba(255, 255, 255, 0) 38%); }
+.shade { position: absolute; inset: 0; pointer-events: none; background: #0b0806; opacity: calc(var(--sh, 0) * .62); }
+.slide.on:hover .frame { transform: translateY(-6px); }
+
+.cap {
+  position: absolute; left: 0; right: 0; top: calc(100% + 16px);
+  display: grid; justify-items: center; gap: 4px; text-align: center; opacity: .6;
+}
+.slide.on .cap { opacity: 1; }
+.cap-k { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+.cap-t { font-family: var(--f-display); font-weight: 700; letter-spacing: -.02em; font-size: clamp(.85rem, calc(var(--w) * .03), 1.55rem); line-height: 1.15; }
+.cap-d, .cap-go { display: none; }
+.slide.on .cap-d { display: block; color: var(--muted); font-size: clamp(.85rem, calc(var(--w) * .021), 1.02rem); max-width: 52ch; margin-top: 2px; }
+.slide.on .cap-go {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px 16px; border-radius: 999px;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--f-mono); font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+}
+
+/* Controles */
+.controls { display: flex; align-items: center; justify-content: center; gap: 18px; padding-block: 8px 6px; }
+.arrow {
+  width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); background: transparent; cursor: pointer;
+  display: grid; place-items: center; transition: background .2s, border-color .2s, color .2s;
+}
+.arrow:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.count { font-family: var(--f-mono); font-size: .86rem; letter-spacing: .14em; min-width: 7.5ch; text-align: center; font-variant-numeric: tabular-nums; }
+.count b { color: var(--accent); font-weight: 600; }
+.hint { margin: 0; padding-bottom: 6px; padding-inline: 16px; text-align: center; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+
+/* Tres columnas inferiores */
+.info { margin-top: clamp(36px, 6vw, 72px); border-top: 1px dashed var(--line); background: var(--bg-2); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(28px, 4vw, 56px); padding-block: clamp(32px, 5vw, 56px); }
+.cols > * { min-width: 0; }
+.cols h2 { margin: 0 0 14px; font-family: var(--f-display); font-weight: 500; font-size: .95rem; letter-spacing: -.01em; }
+.cols p { margin: 0 0 12px; color: var(--muted); max-width: 46ch; }
+.stack-g { margin-bottom: 14px; }
+.stack-g small { display: block; margin-bottom: 6px; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.chips li { font-family: var(--f-mono); font-size: .74rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; }
+.mail-addr { font-family: var(--f-mono); font-size: .86rem; color: var(--muted); overflow-wrap: anywhere; user-select: all; }
+.btn {
+  font-family: var(--f-mono); font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  padding: 10px 16px; border-radius: 999px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+  cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--accent); }
+.foot { border-top: 1px solid var(--line); padding-block: 18px; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; color: var(--muted); }
+
+/* Detalle a pantalla completa */
+.detail {
+  position: fixed; inset: 0; z-index: 1000; overflow-y: auto; overflow-x: hidden;
+  background: linear-gradient(135deg, var(--t1, #17424d), var(--t2, #0a1a22)); color: var(--on-art);
+  display: flex; flex-direction: column;
+  transition: background .8s cubic-bezier(.2,.7,.2,1);
+}
+.detail::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 60% at 82% 8%, color-mix(in srgb, var(--ta, #52e0c8) 30%, transparent), transparent 70%);
+  transition: background .8s cubic-bezier(.2,.7,.2,1);
+}
+.ghost-n {
+  position: absolute; right: -1vw; bottom: -4vw; font-family: var(--f-display); font-weight: 700; line-height: .8;
+  font-size: clamp(9rem, 34vw, 32rem); color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .13); pointer-events: none;
+}
+.d-close {
+  position: fixed; z-index: 3; top: calc(16px + env(safe-area-inset-top, 0px)); right: clamp(16px, 3vw, 36px);
+  display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  background: rgba(0, 0, 0, .35); border: 1px solid rgba(255, 255, 255, .28); color: var(--on-art);
+  font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.d-close:hover { background: var(--ta, #52e0c8); color: #06130f; border-color: transparent; }
+.d-main { position: relative; z-index: 2; flex: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; padding: clamp(72px, 9vh, 96px) clamp(16px, 4.5vw, 64px) 24px; }
+.d-art { perspective: 1600px; }
+.d-frame {
+  position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #000; border: clamp(6px, 1vw, 12px) solid var(--frame); border-radius: 3px;
+  box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .7);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, -6deg)); transition: transform .25s ease-out;
+}
+.d-frame .glass { background: linear-gradient(115deg, rgba(255, 255, 255, .26) 0%, rgba(255, 255, 255, 0) 40%); }
+.d-info { min-width: 0; display: grid; gap: clamp(14px, 2vh, 22px); }
+.d-kicker { margin: 0; font-family: var(--f-mono); font-size: .76rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ta, #52e0c8); }
+.d-title {
+  margin: 0; font-family: var(--f-display); font-weight: 700; letter-spacing: -.035em; line-height: 1.02; text-wrap: balance;
+  font-size: clamp(2rem, 5vw, 4.2rem); overflow-wrap: anywhere;
+  background: linear-gradient(95deg, #fff 30%, var(--ta, #52e0c8)); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.d-lead { margin: 0; font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--on-art-2); max-width: 54ch; }
+.d-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid rgba(255, 255, 255, .2); }
+.d-metrics > div { padding: 14px 14px 14px 0; min-width: 0; }
+.d-metrics > div + div { padding-left: 16px; border-left: 1px solid rgba(255, 255, 255, .2); }
+.d-metrics b { display: block; font-family: var(--f-display); font-weight: 500; font-size: clamp(.95rem, 1.7vw, 1.25rem); letter-spacing: -.02em; line-height: 1.2; overflow-wrap: anywhere; }
+.d-metrics span { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--on-art-2); }
+.d-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.d-actions .btn { background: var(--ta, #52e0c8); border-color: var(--ta, #52e0c8); color: #06130f; }
+.d-actions .btn.ghost { background: transparent; color: var(--on-art); border-color: rgba(255, 255, 255, .4); }
+.d-nav {
+  position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 16px clamp(16px, 4.5vw, 64px) calc(18px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(255, 255, 255, .18);
+}
+.d-nav button { background: none; border: 0; cursor: pointer; color: var(--on-art); display: grid; gap: 2px; text-align: left; padding: 4px 0; min-width: 0; }
+.d-nav button:last-child { text-align: right; justify-items: end; }
+.d-nav small { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--on-art-2); }
+.d-nav strong { font-family: var(--f-display); font-weight: 500; font-size: clamp(.9rem, 1.6vw, 1.15rem); letter-spacing: -.02em; }
+.d-nav button:hover strong { color: var(--ta, #52e0c8); }
+
+.detail .rv { opacity: 0; }
+.detail.show .rv { animation: rv .85s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i, 0) * 80ms + 360ms); }
+.detail.show .d-art { animation: art .95s cubic-bezier(.2, .7, .2, 1) both; animation-delay: .25s; }
+@keyframes rv { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes art { from { opacity: 0; transform: translateX(-40px) scale(.96); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 900px) {
+  .d-main { grid-template-columns: minmax(0, 1fr); align-content: start; }
+  .d-frame { --ry: 0deg; }
+}
+@media (max-width: 640px) {
+  .nav a { display: none; }
+  .nav a.keep { display: inline-block; }
+  .brand-t { display: none; }
+  .arrow { width: 48px; height: 48px; }
+  .d-metrics { grid-template-columns: minmax(0, 1fr); }
+  .d-metrics > div + div { padding-left: 0; border-left: 0; border-top: 1px solid rgba(255, 255, 255, .2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .detail .rv { opacity: 1; }
+  .detail.show .rv, .detail.show .d-art { animation: none; }
+  .frame, .d-frame { transition: none; }
+}
+
+/* Cursor personalizado moderno (solo pointer fino) */
+@media (pointer: fine) {
+  body, a, button, .slide { cursor: none; }
+  .cursor-dot {
+    position: fixed; top: 0; left: 0; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); pointer-events: none; z-index: 9999;
+    transition: width .25s cubic-bezier(.2,.7,.2,1), height .25s cubic-bezier(.2,.7,.2,1), opacity .25s, background .25s;
+    will-change: transform;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0; width: 34px; height: 34px; border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--accent) 60%, transparent);
+    pointer-events: none; z-index: 9998;
+    transition: width .3s cubic-bezier(.2,.7,.2,1), height .3s cubic-bezier(.2,.7,.2,1),
+                border-color .3s, background .3s, opacity .25s;
+    will-change: transform;
+  }
+  .cursor-ring.hover {
+    width: 56px; height: 56px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border-color: var(--accent);
+  }
+  .cursor-dot.hover { width: 4px; height: 4px; }
+  .cursor-ring.press { width: 24px; height: 24px; background: color-mix(in srgb, var(--accent) 28%, transparent); }
+}
+</style>
+
+<main id="main">
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="#proyectos" aria-label="Edwin Cervantes">
+        <span class="mono-mark" aria-hidden="true">EC</span>
+        <span class="brand-t" data-i="brand">Portafolio 2026</span>
+      </a>
+      <nav class="nav" aria-label="Secciones">
+        <a href="#proyectos" data-i="nav1">Proyectos</a>
+        <a href="#perfil" data-i="nav2">Perfil</a>
+        <a href="#contacto" class="keep" data-i="nav3">Contacto</a>
+        <span class="tools">
+          <button class="round-btn" id="lang" type="button" data-ia="langAria"><span id="lang-t">EN</span></button>
+          <button class="round-btn" id="theme" type="button" data-ia="themeAria">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M18.7 5.3l-1.5 1.5M6.8 17.2l-1.5 1.5"/></svg>
+          </button>
+        </span>
+      </nav>
+    </header>
+
+    <section class="hero" id="proyectos">
+      <p class="eyebrow" data-i="eyebrow">Ingeniería de software</p>
+      <h1>Edwin Martin Cervantes Acosta</h1>
+    </section>
+  </div>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="carousel" data-ia="stageAria">
+    <div class="track" id="track"></div>
+  </section>
+
+  <div class="controls">
+    <button class="arrow" id="prev" type="button" data-ia="prevAria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="count" id="count" aria-live="polite"></div>
+    <button class="arrow" id="next" type="button" data-ia="nextAria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+
+  <section class="info" id="perfil">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <h2 data-i="profH"></h2>
+          <p data-i="prof1"></p>
+          <p data-i="prof2"></p>
+        </div>
+        <div>
+          <h2>Stack</h2>
+          <div class="stack-g"><small data-i="g1"></small><ul class="chips"><li>C#</li><li>Java</li><li>TypeScript</li><li>Python</li><li>Go</li><li>SQL</li></ul></div>
+          <div class="stack-g"><small data-i="g2"></small><ul class="chips"><li>React</li><li>React Native</li><li>Next.js</li></ul></div>
+          <div class="stack-g"><small data-i="g3"></small><ul class="chips"><li>WordPress</li><li>Elementor</li><li>Shopify</li><li>Framer</li></ul></div>
+          <div class="stack-g"><small data-i="g4"></small><ul class="chips"><li>Node.js</li><li>PostgreSQL</li><li>Docker</li><li>Kubernetes</li></ul></div>
+        </div>
+        <div id="contacto">
+          <h2 data-i="contH"></h2>
+          <p data-i="contP"></p>
+          <div class="mail">
+            <a class="btn" id="mail-btn" href="mailto:ecer1996@gmail.com"><span data-i="write"></span> <span aria-hidden="true">→</span></a>
+            <span class="mail-addr" id="mail-text">ecer1996@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><div class="wrap">© 2026 Edwin Martin Cervantes Acosta</div></div>
+  </section>
+</main>
+
+<div class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
+  <button class="d-close" id="d-close" type="button"><span data-i="close">Cerrar</span> <span aria-hidden="true">✕</span></button>
+  <div class="ghost-n" id="d-ghost" aria-hidden="true">01</div>
+  <div class="d-main">
+    <div class="d-art"><div class="d-frame" id="d-frame"><span class="art" id="d-art"></span><span class="glass"></span></div></div>
+    <div class="d-info">
+      <p class="d-kicker rv" id="d-kicker" style="--i:0"></p>
+      <h2 class="d-title rv" id="d-title" style="--i:1"></h2>
+      <p class="d-lead rv" id="d-lead" style="--i:2"></p>
+      <div class="d-metrics rv" id="d-metrics" style="--i:3"></div>
+      <div class="d-actions rv" style="--i:4">
+        <a class="btn" id="d-visit" href="#" target="_blank" rel="noopener noreferrer"><span data-i="visit"></span> <span aria-hidden="true">↗</span></a>
+        <a class="btn ghost" id="d-mail" href="mailto:ecer1996@gmail.com"><span data-i="cta"></span> <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+  <nav class="d-nav" data-ia="otherAria">
+    <button type="button" id="d-prev"><small data-i="prevL"></small><strong id="d-prev-t"></strong></button>
+    <button type="button" id="d-next"><small data-i="nextL"></small><strong id="d-next-t"></strong></button>
+  </nav>
+</div>
+
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+<script>
+
+const EMAIL = 'ecer1996@gmail.com';
+const P = [
+  { name: 'Misfit Studios', url: 'https://bemisfit.com/', host: 'bemisfit.com', img: 'img/bemisfit.png',
+    sector: { es: 'Marketing para marcas DTC', en: 'DTC brand marketing' },
+    platform: 'WordPress · Elementor', siteLang: { es: 'Inglés', en: 'English' },
+    line: { es: 'Agencia que une investigación de audiencia y creatividad.', en: 'An agency that pairs audience research with creative work.' },
+    desc: { es: 'Agencia que ayuda a marcas de venta directa a crecer. Une investigación de audiencia, contenido creativo y campañas de rendimiento en un solo método, en tres etapas claras que se ven desde la portada.',
+            en: 'An agency that helps direct-to-consumer brands grow. It blends audience research, creative content and performance campaigns into one method, laid out in three clear stages right on the homepage.' },
+    c1: '#000000', c2: '#000000', ac: '#EA008A' },
+  { name: 'Ellenville Regional Hospital', url: 'https://erhny.org/', host: 'erhny.org', img: 'img/erh.png',
+    sector: { es: 'Salud', en: 'Healthcare' },
+    platform: 'WordPress', siteLang: { es: 'Inglés', en: 'English' },
+    line: { es: 'Hospital comunitario en el valle del Hudson.', en: 'Community hospital in New York’s Hudson Valley.' },
+    desc: { es: 'Hospital comunitario sin fines de lucro en el valle del Hudson, Nueva York. Reúne urgencias, cardiología, cirugía ambulatoria y rehabilitación, además del acceso a citas y al portal de pacientes, en una navegación clara y accesible.',
+            en: 'A nonprofit community hospital in New York’s Hudson Valley. It brings together emergency care, cardiology, outpatient surgery and rehabilitation, plus appointments and the patient portal, through clear and accessible navigation.' },
+    c1: '#005eb8', c2: '#427b35', ac: '#ffffff' },
+  { name: 'Brand’s Media Group', url: 'https://brandsmediagroup.com/', host: 'brandsmediagroup.com', img: 'img/bmg.png',
+    sector: { es: 'Marketing y redes sociales', en: 'Marketing and social media' },
+    platform: 'Framer', siteLang: { es: 'Inglés', en: 'English' },
+    line: { es: 'Agencia de marca para emprendedores modernos.', en: 'A brand agency for modern entrepreneurs.' },
+    desc: { es: 'Agencia que construye marcas para emprendedores: redes sociales, contenido, branding, diseño web y marketing con influencers. Estética minimalista con mucho aire, tipografía sobria y foco total en el mensaje.',
+            en: 'An agency that builds brands for entrepreneurs: social media, content, branding, web design and influencer marketing. A minimalist aesthetic with plenty of breathing room, restrained typography and total focus on the message.' },
+    c1: '#171717', c2: '#171717', ac: '#9f9386' },
+  { name: 'SarahBijoux', url: 'https://sarahbijoux.ca/en', host: 'sarahbijoux.ca', img: 'img/sarah.png',
+    sector: { es: 'Joyería artesanal', en: 'Handmade jewelry' },
+    platform: 'Shopify', siteLang: { es: 'Inglés y francés', en: 'English and French' },
+    line: { es: 'Joyería hecha a mano en Montreal.', en: 'Handmade jewelry from Montreal.' },
+    desc: { es: 'Joyería artesanal de Montreal con tienda en línea y boutique. Colecciones por tema y material, guía de regalos, piezas personalizadas, anillos de compromiso y talleres, todo disponible en inglés y francés.',
+            en: 'A Montreal handmade jewelry brand with an online store and a boutique. Collections by theme and material, a gift guide, custom pieces, engagement rings and workshops, all available in English and French.' },
+    c1: '#F6F4F2', c2: '#4F574C', ac: '#F6F4F2' },
+  { name: 'CULT Ideas', url: 'https://cultideas.com/', host: 'cultideas.com', img: 'img/cult.png',
+    sector: { es: 'Estrategia de marca', en: 'Brand strategy' },
+    platform: 'Framer', siteLang: { es: 'Inglés', en: 'English' },
+    line: { es: 'Convierte clientes en defensores de marca.', en: 'Turning customers into brand advocates.' },
+    desc: { es: 'Agencia de Calgary que convierte clientes en defensores de marca a partir de investigación de actitudes. Reúne talleres, herramientas de mapeo de experiencia, estudio de contenido y arquitectura de experiencia en una sola propuesta.',
+            en: 'A Calgary agency that turns customers into brand advocates through attitude research. It brings workshops, experience-mapping tools, a content studio and experience architecture into a single offering.' },
+    c1: '#0a0a0a', c2: '#2A2A2A', ac: '#d64a2e' },
+  { name: 'Full Capacity Marketing', url: 'https://www.fullcapacitymarketing.com/', host: 'fullcapacitymarketing.com', img: 'img/fcm.png',
+    sector: { es: 'Comunicación estratégica', en: 'Strategic communications' },
+    platform: 'WordPress · Elementor', siteLang: { es: 'Inglés', en: 'English' },
+    line: { es: 'Comunicaciones estratégicas con datos y narrativa.', en: 'Strategic communications built on data and storytelling.' },
+    desc: { es: 'Consultoría nacional de comunicaciones estratégicas para fuerza laboral, educación y emprendimiento. Ordena sus servicios en estrategia, narrativa de marca, capacitación y asesoría, con un centro de aprendizaje propio.',
+            en: 'A national strategic communications consultancy for workforce, education and entrepreneurship. Its services are organized into strategy, brand storytelling, training and consulting, with a dedicated learning center.' },
+    c1: '#2A374B', c2: '#2A374B', ac: '#dcff5c' },
+  { name: 'Explore It. Achieve It.', url: 'https://exploreitachieveit.org/', host: 'exploreitachieveit.org', img: 'img/exploreit.png',
+    sector: { es: 'Orientación profesional', en: 'Career guidance' },
+    platform: 'WordPress · Elementor', siteLang: { es: 'Inglés', en: 'English' },
+    line: { es: 'Rutas profesionales para estudiantes y adultos.', en: 'Career pathways for students and adults.' },
+    desc: { es: 'Alianza K-16 del Valle Central de San Joaquín que orienta a estudiantes y adultos hacia carreras bien pagadas. Presenta cuatro rutas (negocios, educación, ingeniería y salud), un kit de campaña, preguntas frecuentes y recursos para empleadores.',
+            en: 'The Central San Joaquin Valley K-16 Partnership, guiding students and adults toward well-paid careers. It presents four pathways (business, education, engineering and health), a campaign toolkit, FAQs and employer resources.' },
+    c1: '#24586c', c2: '#24586c', ac: '#ffc857' }
+];
+
+/* ===== Textos de la interfaz / interface text ===== */
+const L = {
+  es: {
+    brand: 'Portafolio 2026', nav1: 'Proyectos', nav2: 'Perfil', nav3: 'Contacto', eyebrow: 'Ingeniería de software',
+    langAria: 'Cambiar a inglés', themeAria: 'Cambiar entre tema claro y oscuro',
+    stageAria: 'Proyectos. Usa las flechas del teclado para moverte y Enter para abrir el proyecto central.',
+    prevAria: 'Proyecto anterior', nextAria: 'Proyecto siguiente', otherAria: 'Otros proyectos',
+    hint: 'Arrastra, usa ← → o toca el proyecto central para abrirlo',
+    profH: 'Perfil',
+    prof1: 'Soy ingeniero de software. Diseño y construyo aplicaciones web, móviles y servicios de backend, desde el modelo de datos hasta la interfaz que usa la gente.',
+    prof2: 'Los proyectos de esta página son landing pages y sitios web para agencias de marketing, una joyería, un hospital regional y organizaciones educativas.',
+    g1: 'Lenguajes', g2: 'Web y móvil', g3: 'Plataformas', g4: 'Datos e infraestructura',
+    contH: 'Contacto', contP: '¿Tienes una idea o un equipo que necesita refuerzo? Escríbeme y platicamos.',
+    write: 'Escríbeme', copy: 'Copiar', copied: 'Copiado', selectIt: 'Selecciona y copia',
+    close: 'Cerrar', visit: 'Visitar sitio', cta: 'Hablemos de un proyecto así', prevL: '← Anterior', nextL: 'Siguiente →',
+    open: 'Abrir proyecto', type: 'Proyecto', fSector: 'Sector', fLang: 'Idioma del sitio', fPlat: 'Plataforma',
+    group: (i, n, name) => `${i} de ${n}: ${name}`,
+    subj: 'Hola Edwin, quiero hablar de un proyecto',
+    subjP: (name) => `Hola Edwin, me interesa un proyecto como ${name}`,
+    body: 'Hola Edwin,\n\nVi tu portafolio y me gustaría platicar contigo.\n\n'
+  },
+  en: {
+    brand: 'Portfolio 2026', nav1: 'Projects', nav2: 'Profile', nav3: 'Contact', eyebrow: 'Software engineering',
+    langAria: 'Switch to Spanish', themeAria: 'Switch between light and dark theme',
+    stageAria: 'Projects. Use the arrow keys to move and Enter to open the center project.',
+    prevAria: 'Previous project', nextAria: 'Next project', otherAria: 'Other projects',
+    hint: 'Drag, use ← → or tap the center project to open it',
+    profH: 'Profile',
+    prof1: 'I am a software engineer. I design and build web and mobile apps and backend services, from the data model to the interface people use.',
+    prof2: 'The projects on this page are landing pages and websites for marketing agencies, a jewelry brand, a regional hospital and education organizations.',
+    g1: 'Languages', g2: 'Web & mobile', g3: 'Platforms', g4: 'Data & infrastructure',
+    contH: 'Contact', contP: 'Have an idea, or a team that needs extra hands? Send me a message and let’s talk.',
+    write: 'Email me', copy: 'Copy', copied: 'Copied', selectIt: 'Select and copy',
+    close: 'Close', visit: 'Visit site', cta: 'Let’s talk about a project like this', prevL: '← Previous', nextL: 'Next →',
+    open: 'Open project', type: 'Project', fSector: 'Industry', fLang: 'Site language', fPlat: 'Platform',
+    group: (i, n, name) => `${i} of ${n}: ${name}`,
+    subj: 'Hi Edwin, I would like to talk about a project',
+    subjP: (name) => `Hi Edwin, I’m interested in a project like ${name}`,
+    body: 'Hi Edwin,\n\nI saw your portfolio and I would like to talk with you.\n\n'
+  }
+};
+let lang = 'es';
+try { const s = localStorage.getItem('ec-lang'); lang = (s === 'es' || s === 'en') ? s : (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en'; } catch (e) {}
+const T = (v) => (v && typeof v === 'object') ? v[lang] : v;
+const mailHref = (subject) => `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(L[lang].body)}`;
+
+/* ===== Ilustración de cada landing (SVG generado, se reemplaza por img si existe) ===== */
+let uid = 0;
+const mk = (s) => () => ((s = (s * 16807) % 2147483647) / 2147483647);
+const WH = 'rgba(255,255,255,.08)', WL = 'rgba(255,255,255,.2)', KD = 'rgba(0,0,0,.32)', LN = 'rgba(255,255,255,.38)';
+const R = (x, y, w, h, r, f, s, o) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}"${s ? ` stroke="${s}"` : ''}${o != null ? ` opacity="${o}"` : ''}/>`;
+const TX = (x, y, t, sz, f, w) => `<text x="${x}" y="${y}" fill="${f || '#fff'}" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="${sz}" font-weight="${w || 600}">${t}</text>`;
+function siteArt(p, v) {
+  const id = 'g' + (uid++), x0 = 50, y0 = 40, w = 700, h = 420, r = mk(v * 13 + 3);
+  let s = R(x0, y0, w, h, 12, 'rgba(255,255,255,.07)', WL) + R(x0, y0, w, 36, 12, KD) + R(x0, y0 + 24, w, 12, 0, KD);
+  ['#ff6b6b', '#ffd166', '#7bd88f'].forEach((c, i) => { s += `<circle cx="${x0 + 20 + i * 18}" cy="${y0 + 18}" r="5" fill="${c}"/>`; });
+  s += R(x0 + 100, y0 + 9, 320, 18, 9, WH) + TX(x0 + 116, y0 + 22, p.host, 11, LN, 500);
+  s += `<circle cx="${x0 + 36}" cy="${y0 + 70}" r="9" fill="${p.ac}"/>`;
+  [0, 1, 2, 3].forEach((i) => { s += R(x0 + 410 + i * 62, y0 + 66, 46, 7, 3.5, LN); });
+  s += R(x0 + w - 108, y0 + 58, 72, 24, 12, p.ac);
+  if (v === 0) {
+    s += R(x0 + 36, y0 + 118, 300, 24, 7, '#fff', null, .94) + R(x0 + 36, y0 + 152, 240, 24, 7, '#fff', null, .94);
+    s += R(x0 + 36, y0 + 194, 280, 8, 4, LN) + R(x0 + 36, y0 + 212, 230, 8, 4, LN);
+    s += R(x0 + 36, y0 + 244, 132, 36, 18, p.ac) + R(x0 + 182, y0 + 244, 110, 36, 18, 'none', WL);
+    s += R(x0 + 392, y0 + 106, 272, 190, 16, 'rgba(255,255,255,.12)') + `<circle cx="${x0 + 528}" cy="${y0 + 190}" r="56" fill="${p.ac}" opacity=".9"/><circle cx="${x0 + 466}" cy="${y0 + 250}" r="20" fill="#fff" opacity=".4"/>`;
+    for (let i = 0; i < 3; i++) s += R(x0 + 36 + i * 214, y0 + 322, 200, 70, 12, WH, WL) + R(x0 + 52 + i * 214, y0 + 340, 90, 8, 4, '#fff', null, .8) + R(x0 + 52 + i * 214, y0 + 358, 140, 7, 3.5, LN);
+  } else if (v === 1) {
+    s += R(x0 + 160, y0 + 112, 380, 24, 7, '#fff', null, .94) + R(x0 + 210, y0 + 146, 280, 24, 7, '#fff', null, .94);
+    s += R(x0 + 230, y0 + 188, 240, 8, 4, LN) + R(x0 + 260, y0 + 206, 180, 8, 4, LN);
+    s += R(x0 + 292, y0 + 236, 116, 34, 17, p.ac);
+    s += R(x0 + 36, y0 + 292, w - 72, 100, 14, 'rgba(255,255,255,.1)');
+    s += `<path d="M${x0 + 36} ${y0 + 392}L${x0 + 220} ${y0 + 320}L${x0 + 330} ${y0 + 366}L${x0 + 470} ${y0 + 300}L${x0 + w - 36} ${y0 + 352}V${y0 + 392}Z" fill="${p.ac}" opacity=".55"/>`;
+  } else {
+    s += R(x0 + 36, y0 + 104, 236, 290, 16, 'rgba(255,255,255,.12)');
+    s += `<circle cx="${x0 + 154}" cy="${y0 + 220}" r="70" fill="${p.ac}" opacity=".85"/><rect x="${x0 + 84}" y="${y0 + 300}" width="140" height="64" rx="12" fill="#fff" opacity=".25"/>`;
+    s += R(x0 + 300, y0 + 108, 320, 24, 7, '#fff', null, .94) + R(x0 + 300, y0 + 142, 250, 24, 7, '#fff', null, .94);
+    s += R(x0 + 300, y0 + 184, 340, 8, 4, LN) + R(x0 + 300, y0 + 202, 290, 8, 4, LN);
+    for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) s += R(x0 + 300 + i * 176, y0 + 236 + j * 66, 164, 54, 10, WH, WL) + R(x0 + 314 + i * 176, y0 + 254 + j * 66, 80 + Math.floor(r() * 40), 8, 4, '#fff', null, .8);
+    s += R(x0 + 300, y0 + 368, 124, 30, 15, p.ac);
+  }
+  return `<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${p.c1}"/><stop offset="1" stop-color="${p.c2}"/></linearGradient><radialGradient id="${id}r" cx=".8" cy=".1" r=".7"><stop offset="0" stop-color="${p.ac}" stop-opacity=".32"/><stop offset="1" stop-color="${p.ac}" stop-opacity="0"/></radialGradient></defs><rect width="800" height="500" fill="url(#${id})"/><rect width="800" height="500" fill="url(#${id}r)"/>${s}</svg>`;
+}
+function mountArt(box, p, i) {
+  box.innerHTML = siteArt(p, i % 3);
+  if (!p.img) return;
+  const im = new Image();
+  im.className = 'shot-img'; im.alt = '';
+  im.onload = () => { box.innerHTML = ''; box.appendChild(im); };
+  im.src = p.img;
+}
+
+/* ===== Carrusel en arco ===== */
+const $ = (q) => document.querySelector(q);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const stage = $('#stage'), track = $('#track'), n = P.length;
+let pos = 0, target = 0, raf = 0, W = 600, moved = false, dragging = false, sx = 0, sp = 0, wheelLock = 0;
+const pad2 = (v) => String(v).padStart(2, '0');
+const mod = (v) => ((v % n) + n) % n;
+
+const slides = P.map((p, i) => {
+  const el = document.createElement('div');
+  el.className = 'slide';
+  el.setAttribute('role', 'group');
+  el.innerHTML = `<div class="frame"><span class="art"></span><span class="glass"></span><span class="shade"></span></div>` +
+    `<div class="cap"><span class="cap-k"></span><strong class="cap-t"></strong><span class="cap-d"></span><span class="cap-go"><span class="cap-go-t"></span> <i aria-hidden="true">↗</i></span></div>`;
+  mountArt(el.querySelector('.art'), p, i);
+  el.addEventListener('click', () => {
+    if (moved) return;
+    const cur = mod(Math.round(target));
+    let d = mod(i - cur); if (d > n / 2) d -= n;
+    if (d === 0) openDetail(i); else go(Math.round(target) + d);
+  });
+  track.appendChild(el);
+  return el;
+});
+
+function layout() {
+  const sw = stage.clientWidth, vh = innerHeight;
+  /* Ajuste responsive: deja más espacio vertical para caption y crece si hace falta */
+  const maxByH = Math.max(220, (vh - 240) / 0.9);
+  W = Math.max(220, Math.min(820, Math.min(sw * (sw < 720 ? 0.78 : 0.52), maxByH)));
+  const rise = W * 0.2;
+  /* La caption de la slide activa puede ocupar hasta ~200px; reservamos suficiente espacio */
+  const capH = Math.max(180, W * 0.32);
+  stage.style.setProperty('--w', W + 'px');
+  stage.style.height = Math.round(W * 0.625 + rise + capH + 40) + 'px';
+  track.style.top = Math.round(rise + 8) + 'px';
+  render();
+}
+function render() {
+  const rise = W * 0.2;
+  slides.forEach((el, i) => {
+    let d = mod(i - pos); if (d > n / 2) d -= n;
+    const a = Math.abs(d), sg = Math.sign(d);
+    const x = sg * (a <= 1 ? a * 0.8 * W : 0.8 * W + Math.min(a - 1, 2.5) * 0.3 * W);
+    const y = -rise * Math.pow(Math.min(a, 3) / 3, 2);
+    const z = -Math.min(a, 3) * 150;
+    const rot = -sg * (Math.min(a, 1) * 52 + Math.min(Math.max(a - 1, 0), 2) * 3);
+    el.style.transform = `translate3d(${(x - W / 2).toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(0)}px) rotateY(${rot.toFixed(1)}deg)`;
+    el.style.opacity = Math.max(0, Math.min(1, (3.45 - a) / 0.9)).toFixed(3);
+    el.style.zIndex = String(100 - Math.round(a * 10));
+    el.style.setProperty('--sh', Math.min(a, 1).toFixed(3));
+    el.style.pointerEvents = a > 3.2 ? 'none' : 'auto';
+    el.classList.toggle('on', a < 0.5);
+  });
+  $('#count').innerHTML = `<b>${pad2(mod(Math.round(pos)) + 1)}</b> / ${pad2(n)}`;
+}
+function tick() {
+  pos += (target - pos) * 0.14;
+  if (Math.abs(target - pos) < 0.002) { pos = target; render(); raf = 0; return; }
+  render(); raf = requestAnimationFrame(tick);
+}
+function go(t, instant) {
+  target = t;
+  if (instant || reduce) { pos = t; render(); return; }
+  if (!raf) raf = requestAnimationFrame(tick);
+}
+$('#prev').addEventListener('click', () => go(Math.round(target) - 1));
+$('#next').addEventListener('click', () => go(Math.round(target) + 1));
+
+stage.addEventListener('pointerdown', (e) => {
+  if (e.button > 0) return;
+  dragging = true; moved = false; sx = e.clientX; sp = pos;
+});
+addEventListener('pointermove', (e) => {
+  if (!dragging) return;
+  const dx = e.clientX - sx;
+  if (Math.abs(dx) > 6) moved = true;
+  if (moved) { cancelAnimationFrame(raf); raf = 0; pos = target = sp - dx / (W * 0.55); render(); }
+});
+addEventListener('pointerup', () => {
+  if (!dragging) return;
+  dragging = false;
+  if (moved) { go(Math.round(pos)); setTimeout(() => { moved = false; }, 60); }
+});
+stage.addEventListener('wheel', (e) => {
+  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < 8) return;
+  e.preventDefault();
+  const now = Date.now(); if (now - wheelLock < 380) return; wheelLock = now;
+  go(Math.round(target) + Math.sign(e.deltaX));
+}, { passive: false });
+stage.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') { e.preventDefault(); go(Math.round(target) - 1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); go(Math.round(target) + 1); }
+  else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(mod(Math.round(target))); }
+});
+
+/* ===== Detalle: se expande desde el marco ===== */
+const detail = $('#detail'), mainEl = $('#main');
+let di = 0, isOpen = false, lastFocus = null;
+
+function fillDetailText(i) {
+  const p = P[i], t = L[lang];
+  $('#d-kicker').textContent = `${t.type} · ${T(p.sector)}`;
+  $('#d-title').textContent = p.name;
+  $('#d-lead').textContent = T(p.desc);
+  $('#d-metrics').innerHTML = `<div><b>${T(p.sector)}</b><span>${t.fSector}</span></div><div><b>${T(p.siteLang)}</b><span>${t.fLang}</span></div><div><b>${p.platform}</b><span>${t.fPlat}</span></div>`;
+  $('#d-visit').href = p.url;
+  $('#d-mail').href = mailHref(t.subjP(p.name));
+  $('#d-prev-t').textContent = P[mod(i - 1)].name;
+  $('#d-next-t').textContent = P[mod(i + 1)].name;
+}
+function setDetail(i) {
+  const p = P[i];
+  detail.style.setProperty('--t1', p.c1);
+  detail.style.setProperty('--t2', p.c2);
+  detail.style.setProperty('--ta', p.ac);
+  mountArt($('#d-art'), p, i);
+  $('#d-ghost').textContent = pad2(i + 1);
+  fillDetailText(i);
+  detail.scrollTop = 0;
+  detail.classList.remove('show'); void detail.offsetWidth; detail.classList.add('show');
+}
+function frameInset(i) {
+  const r = slides[i].querySelector('.frame').getBoundingClientRect();
+  const vw = document.documentElement.clientWidth, vh = innerHeight;
+  return `inset(${Math.max(0, r.top)}px ${Math.max(0, vw - r.right)}px ${Math.max(0, vh - r.bottom)}px ${Math.max(0, r.left)}px round 4px)`;
+}
+function openDetail(i) {
+  if (isOpen) return;
+  isOpen = true; di = i; lastFocus = document.activeElement;
+  const from = frameInset(i);
+  detail.hidden = false;
+  document.documentElement.style.overflow = 'hidden';
+  mainEl.inert = true;
+  setDetail(i);
+  if (!reduce) detail.animate([{ clipPath: from }, { clipPath: 'inset(0px 0px 0px 0px round 0px)' }], { duration: 780, easing: 'cubic-bezier(.76,0,.18,1)', fill: 'both' });
+  $('#d-close').focus({ preventScroll: true });
+}
+function closeDetail() {
+  if (!isOpen) return;
+  isOpen = false;
+  const finish = () => {
+    detail.getAnimations().forEach((a) => a.cancel());
+    detail.hidden = true; detail.classList.remove('show');
+    document.documentElement.style.overflow = '';
+    mainEl.inert = false;
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  };
+  if (reduce) { finish(); return; }
+  detail.classList.remove('show');
+  const a = detail.animate([{ clipPath: 'inset(0px 0px 0px 0px round 0px)' }, { clipPath: frameInset(di) }], { duration: 620, easing: 'cubic-bezier(.76,0,.18,1)', fill: 'both' });
+  a.onfinish = finish;
+}
+function step(dir) {
+  di = mod(di + dir);
+  go(Math.round(target) + dir, true);
+  setDetail(di);
+}
+$('#d-close').addEventListener('click', closeDetail);
+$('#d-prev').addEventListener('click', () => step(-1));
+$('#d-next').addEventListener('click', () => step(1));
+addEventListener('keydown', (e) => {
+  if (!isOpen) return;
+  if (e.key === 'Escape') closeDetail();
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+});
+detail.addEventListener('pointermove', (e) => {
+  if (innerWidth < 900 || reduce) return;
+  const fr = $('#d-frame'), x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+  fr.style.setProperty('--ry', (-6 + x * 8).toFixed(2) + 'deg');
+  fr.style.setProperty('--rx', (-y * 6).toFixed(2) + 'deg');
+});
+
+/* ===== Idioma, tema, correo y arranque ===== */
+function applyLang() {
+  const t = L[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i]').forEach((el) => { if (t[el.dataset.i] != null) el.textContent = t[el.dataset.i]; });
+  document.querySelectorAll('[data-ia]').forEach((el) => { el.setAttribute('aria-label', t[el.dataset.ia]); });
+  $('#lang-t').textContent = lang === 'es' ? 'EN' : 'ES';
+  slides.forEach((el, i) => {
+    const p = P[i];
+    el.setAttribute('aria-label', t.group(i + 1, n, p.name));
+    el.querySelector('.cap-k').textContent = `${t.type} · ${T(p.sector)}`;
+    el.querySelector('.cap-t').textContent = p.name;
+    el.querySelector('.cap-d').textContent = T(p.line);
+    el.querySelector('.cap-go-t').textContent = t.open;
+  });
+  $('#mail-btn').href = mailHref(t.subj);
+  if (isOpen) fillDetailText(di);
+}
+$('#lang').addEventListener('click', () => {
+  lang = lang === 'es' ? 'en' : 'es';
+  try { localStorage.setItem('ec-lang', lang); } catch (e) {}
+  applyLang();
+});
+const root = document.documentElement;
+try { const th = localStorage.getItem('ec-theme'); if (th === 'light' || th === 'dark') root.dataset.theme = th; } catch (e) {}
+$('#theme').addEventListener('click', () => {
+  const cur = root.dataset.theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const next = cur === 'light' ? 'dark' : 'light';
+  root.dataset.theme = next;
+  try { localStorage.setItem('ec-theme', next); } catch (e) {}
+});
+$('#mail-text').textContent = EMAIL;
+addEventListener('resize', layout);
+
+/* ===== Cursor personalizado (efecto cool y moderno) ===== */
+(() => {
+  if (!matchMedia('(pointer: fine)').matches || reduce) return;
+  const dot = $('#cursor-dot'), ring = $('#cursor-ring');
+  let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, visible = false;
+  addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    if (!visible) { visible = true; dot.style.opacity = '1'; ring.style.opacity = '1'; }
+  });
+  addEventListener('mouseleave', () => { visible = false; dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  addEventListener('mousedown', () => ring.classList.add('press'));
+  addEventListener('mouseup', () => ring.classList.remove('press'));
+  const hoverSel = 'a, button, .slide, .chips li, .mail-addr, [role="button"]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverSel)) { dot.classList.add('hover'); ring.classList.add('hover'); }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverSel)) { dot.classList.remove('hover'); ring.classList.remove('hover'); }
+  });
+  (function loop() {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    dot.style.transform = `translate3d(${mx - dot.offsetWidth / 2}px, ${my - dot.offsetHeight / 2}px, 0)`;
+    ring.style.transform = `translate3d(${rx - ring.offsetWidth / 2}px, ${ry - ring.offsetHeight / 2}px, 0)`;
+    requestAnimationFrame(loop);
+  })();
+})();
+
+applyLang();
+layout();
+</script>
+
+</body></html>
